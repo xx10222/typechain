@@ -30,9 +30,17 @@ const getLatestBlock = (): Block => blockchain[blockchain.length - 1];
 
 const getNewTimeStamp = (): number => Math.round(new Date().getTime() / 1000);
 
-//blockchain.push("stuff") //error! - blockchain은 [Block]만 저장하는 배열인데, stuff는 아니니까 오류 발생!
+const createNewBlock = (data:string): Block => {
+    const previousBlock: Block = getLatestBlock();
+    const newIndex: number = previousBlock.index + 1;
+    const newTimestamp: number = getNewTimeStamp();
+    const newHash: string = Block.calculateBlockHash(newIndex, previousBlock.hash, newTimestamp, data);
+    const newBlock: Block = new Block(newIndex, newHash, previousBlock.hash, data, newTimestamp);
+
+    return newBlock;
+}
 
 
-console.log(blockchain);
+console.log(createNewBlock("hi"), createNewBlock("bye"));
 
 export {};
